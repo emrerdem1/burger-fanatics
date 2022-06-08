@@ -5,7 +5,7 @@ import RestaurantReviewBody from './RestaurantReviewBody';
 import RestaurantHeaderView from './RestaurantHeaderView';
 import styled from '@emotion/styled';
 import { Button } from 'antd';
-import { ColorPalette } from 'helpers/general/constants';
+import { Breakpoints, ColorPalette } from 'helpers/general/constants';
 import RestaurantInfoBody from './RestaurantInfoBody';
 import { DownOutlined, RightOutlined } from '@ant-design/icons';
 
@@ -29,7 +29,7 @@ const RestaurantView: React.FC<IRestaurantViewProps> = ({ restaurant }) => {
   );
 
   return (
-    <CustomCard padding='16px 26px' margin='12px 0'>
+    <CustomCard padding='16px 26px' padding_sm='16px 16px' margin='12px 0'>
       <RestaurantHeaderView icon={restaurant.icon} name={restaurant.name}>
         <ToggleReviewsButton
           onClick={toggleReviews}
@@ -55,14 +55,14 @@ const VisibilityTogglerDiv = styled.div<{ shouldShow: boolean }>`
 
 const ToggleReviewsButton = styled(Button)`
   height: auto;
-  padding: 12px 44px;
+  padding: 12px 24px;
   border-radius: 8px;
   border: none;
   color: white;
   background-color: ${ColorPalette.orange.primary};
+  max-width: 200px;
 
   .anticon {
-    margin-right: 6px;
     font-size: 12px;
   }
 
@@ -72,6 +72,10 @@ const ToggleReviewsButton = styled(Button)`
     opacity: 0.9;
     color: white;
     background-color: ${ColorPalette.orange.primary};
+  }
+
+  @media (max-width: ${Breakpoints.TABLET}px) {
+    align-self: center;
   }
 `;
 

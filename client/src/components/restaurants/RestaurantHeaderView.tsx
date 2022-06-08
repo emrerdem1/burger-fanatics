@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Typography } from 'antd';
 import { IRestaurantInfo } from 'helpers/general/types';
+import { Breakpoints } from 'helpers/general/constants';
 
 interface IRestaurantHeaderViewProps {
   icon: IRestaurantInfo['icon'];
@@ -29,6 +30,14 @@ const IconHeaderDiv = styled.div`
   justify-content: space-between;
   color: black;
   margin-bottom: 22px;
+
+  @media (max-width: ${Breakpoints.TABLET}px) {
+    flex-direction: column;
+
+    &:first-child {
+      margin-bottom: 20px;
+    }
+  }
 `;
 
 const LeftSideDiv = styled.div`

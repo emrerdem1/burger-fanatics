@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import styled from '@emotion/styled';
-import { ColorPalette, ScreenRoutes } from 'helpers/general/constants';
+import { Breakpoints, ColorPalette, ScreenRoutes } from 'helpers/general/constants';
 import { ReactComponent as HandIcon } from 'assets/images/hand-icon.svg';
 import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -42,6 +42,15 @@ const TextContainerDiv = styled.div`
   width: 55%;
   font-size: clamp(2vw, 3.3rem, 4vw);
   padding: 0 1.2em;
+
+  @media (max-width: ${Breakpoints.TABLET}px) {
+    width: 90%;
+    padding-bottom: 50px;
+  }
+
+  @media (max-width: ${Breakpoints.MOBILE}px) {
+    font-size: clamp(1.7rem, 5vw + 0.1rem, 6vw);
+  }
 `;
 
 const FindButton = styled(Button)`

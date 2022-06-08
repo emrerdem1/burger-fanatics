@@ -13,8 +13,8 @@ const AddReviewView = () => {
 
   return (
     <>
-      <Tooltip title={isLoggedIn ? 'You need to login first.' : null} placement='right'>
-        <Button type='text' onClick={openModal}>
+      <Tooltip title={!isLoggedIn ? 'You need to login first.' : null} placement='right'>
+        <Button type='text' onClick={openModal} style={{ marginBottom: 10 }}>
           Add your own review
         </Button>
       </Tooltip>

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { ColorPalette } from 'helpers/general/constants';
+import { Breakpoints, ColorPalette } from 'helpers/general/constants';
 import RestaurantsListView from './RestaurantsListView';
 import SearchView from './SearchView';
 
@@ -19,6 +19,11 @@ const ContainerDiv = styled.div`
   width: 100%;
   max-width: 1240px;
   padding: 24px 36px;
+
+  @media (max-width: ${Breakpoints.TABLET}px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 `;
 
 const BackgroundDiv = styled.div`

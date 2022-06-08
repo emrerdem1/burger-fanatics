@@ -1,4 +1,4 @@
-import { Colors, ColorTypes, IRestaurantInfo } from './types';
+import { Colors, ColorTypes, IRestaurantInfo, IRestaurantsResponse } from './types';
 
 export enum ScreenRoutes {
   HOME = '/',
@@ -60,4 +60,9 @@ const getMockRestaurants = (): IRestaurantInfo[] => {
       },
     ],
   }));
+};
+
+export const MOCK_RESTAURANTS: IRestaurantsResponse = {
+  data: getMockRestaurants().map((res, idx) => ({ id: idx.toString(), attributes: res })),
+  meta: [],
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { ReactComponent as BurgerImage } from 'assets/images/burger-image.svg';
-import { ColorPalette } from 'helpers/general/constants';
+import { Breakpoints, ColorPalette } from 'helpers/general/constants';
 
 const HeroImageView = () => {
   return (
@@ -25,6 +25,10 @@ const HeroImageContainerDiv = styled.div`
     background-color: ${ColorPalette.blue.secondary};
     z-index: -1;
     clip-path: ellipse(285% 100% at 97% 100%);
+  }
+
+  @media (max-width: ${Breakpoints.TABLET}px) {
+    width: min(75%, 420px);
   }
 `;
 

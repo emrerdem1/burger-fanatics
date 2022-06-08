@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
-import { ColorPalette } from 'helpers/general/constants';
+import { Breakpoints, ColorPalette } from 'helpers/general/constants';
 
 interface ICustomCardProps {
   margin?: string;
-  padding?: string;
   border?: string;
+  padding?: string;
+  padding_sm?: string;
 }
 
 export const CustomCard = styled.div<ICustomCardProps>`
@@ -14,4 +15,8 @@ export const CustomCard = styled.div<ICustomCardProps>`
   border: ${(props) => props.border};
   border-radius: 14px;
   background-color: white;
+
+  @media (max-width: ${Breakpoints.TABLET}px) {
+    padding: ${(props) => props.padding_sm};
+  }
 `;
