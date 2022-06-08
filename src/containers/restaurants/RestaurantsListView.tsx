@@ -1,11 +1,22 @@
-import React from 'react';
-import { MOCK_RESTAURANTS_INFO } from 'helpers/general/constants';
+import React, { useMemo } from 'react';
 import RestaurantView from '../../components/restaurants/RestaurantView';
+import { useGetRestaurantsQuery } from 'redux/api/apiSlice';
+import LoaderView from 'components/common/LoaderView';
+import ErrorView from 'components/common/ErrorView';
 
 const RestaurantsListView = () => {
-  const restaurantList = MOCK_RESTAURANTS_INFO.map((restaurant) => (
-    <RestaurantView restaurant={restaurant} key={restaurant.id} />
-  ));
+  const { data, isLoading, isError } = useGetRestaurantsQuery();
+
+  const restaurantList = useMemo(
+    () =>
+      data?.data.map((restaurant) => (
+        <RestaurantView restaurant={restaurant.attributes} key={restaurant.id} />
+      )),
+    [data?.data],
+  );
+
+  if (isError) return <ErrorView hasHomeNavigation />;
+  if (isLoading || !data) return <LoaderView />;
 
   return <div>{restaurantList}</div>;
 };

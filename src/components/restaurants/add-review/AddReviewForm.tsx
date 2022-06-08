@@ -11,20 +11,29 @@ enum FormItemNames {
   RATING_TEXTURE = 'rating_texture',
 }
 
-interface AddReviewFormProps {
+interface IAddReviewFormProps {
   cancelModal: () => void;
 }
-const AddReviewForm: React.FC<AddReviewFormProps> = ({ cancelModal }) => {
+
+const AddReviewForm: React.FC<IAddReviewFormProps> = ({ cancelModal }) => {
   const imageRef = React.useRef<HTMLInputElement | null>(null);
+  const [form] = Form.useForm();
 
   const saveReview = (values: FormItemNames) => {
     console.log(imageRef.current);
     console.log('Received values of form: ', values);
     cancelModal();
+    form.resetFields();
   };
 
   return (
-    <Form name='add-review-form' onFinish={saveReview} autoComplete='off' requiredMark={false}>
+    <Form
+      form={form}
+      onFinish={saveReview}
+      name='add-review-form'
+      autoComplete='off'
+      requiredMark={false}
+    >
       <Form.Item
         name={FormItemNames.COMMENT}
         rules={[{ required: true, message: 'Please write your review here.' }]}

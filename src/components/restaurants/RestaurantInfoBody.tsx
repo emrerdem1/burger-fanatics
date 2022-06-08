@@ -20,8 +20,8 @@ const RestaurantInfoBody: React.FC<IRestaurantInfoBodyProps> = ({ info }) => {
       </InfoDetailDiv>
       <Divider />
       <RestaurantStatisticsView
-        rating={info.rating}
-        reviewCount={info.reviews.length}
+        rating={info.rating_avg}
+        reviewCount={info.reviews?.length || 1}
         opening_hours={info.opening_hours}
       />
     </div>

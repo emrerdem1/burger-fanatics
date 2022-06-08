@@ -14,7 +14,7 @@ const DEFAULT_COMMENT = `Do you find yourself struggling more than usual with th
   usual with the current ongoing situation or is it an illusiation to you?s`;
 
 interface IRestaurantReviewViewProps {
-  rating: IRestaurantInfo['rating'];
+  rating: IRestaurantInfo['rating_avg'];
   comment?: string;
   image?: string;
   reviewed_by?: string;
@@ -33,7 +33,7 @@ const RestaurantReviewView: React.FC<IRestaurantReviewViewProps> = ({
       border={`2px solid ${ColorPalette.white.secondary}`}
     >
       <ReviewHeaderDiv>
-        <span>{rating || '4.5 / 9'}</span>
+        <span>{rating} / 5</span>
         <span>
           Reviewed by: <strong>{reviewed_by || 'Emre'}</strong>
         </span>

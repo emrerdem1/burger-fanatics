@@ -14,8 +14,8 @@ const RestaurantReviewBody: React.FC<IRestaurantReviewBodyProps> = ({ info }) =>
     <>
       <AddReviewView />
       <ReviewContainerDiv>
-        <RestaurantReviewView rating={info.rating} />
-        <RestaurantReviewView rating={info.rating} />
+        <RestaurantReviewView rating={info.rating_avg} />
+        <RestaurantReviewView rating={info.rating_avg} />
       </ReviewContainerDiv>
     </>
   );

@@ -6,7 +6,7 @@ import { BarChartOutlined, FieldTimeOutlined, RadarChartOutlined } from '@ant-de
 
 interface IRestaurantStatisticsViewProps {
   reviewCount: number;
-  rating: IRestaurantInfo['rating'];
+  rating: IRestaurantInfo['rating_avg'];
   opening_hours: IRestaurantInfo['opening_hours'];
 }
 
@@ -21,7 +21,7 @@ const RestaurantStatisticsView: React.FC<IRestaurantStatisticsViewProps> = ({
         <div>
           <RadarChartOutlined /> <strong>Rating: </strong>
         </div>
-        <span className='detail-data'>{rating || '4.3 / 5'}</span>
+        <span className='detail-data'>{rating}</span>
       </BoxDiv>
       <BoxDiv>
         <div>
@@ -33,7 +33,7 @@ const RestaurantStatisticsView: React.FC<IRestaurantStatisticsViewProps> = ({
         <div>
           <FieldTimeOutlined /> <strong>Hours of operation: </strong>
         </div>
-        <span className='detail-data'>{opening_hours || '10:00-22:00'}</span>
+        <span className='detail-data'>{opening_hours}</span>
       </BoxDiv>
     </CardFooterDiv>
   );

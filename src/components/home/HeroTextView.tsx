@@ -19,7 +19,7 @@ const HeroTextView = () => {
         Read the reviews from burger fanatics, and view the restaurant details! You can also share
         your opition!
       </SubTextHeader>
-      <FindButton onClick={() => navigate(ScreenRoutes.BURGER_RESTAURANTS)}>
+      <FindButton onClick={() => navigate(ScreenRoutes.RESTAURANTS)}>
         <SearchOutlined />
         Search burger places
       </FindButton>

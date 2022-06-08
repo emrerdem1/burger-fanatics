@@ -11,7 +11,7 @@ const RoutesScreen: React.FC = () => {
     <Routes>
       <Route path={ScreenRoutes.HOME} element={<LayoutView />}>
         <Route index element={<HomeView />} />
-        <Route path={ScreenRoutes.BURGER_RESTAURANTS} element={<RestaurantsScreen />} />
+        <Route path={ScreenRoutes.RESTAURANTS} element={<RestaurantsScreen />} />
         <Route path={ScreenRoutes.NOT_FOUND} element={<PageNotFoundView hasHomeNavigation />} />
       </Route>
     </Routes>
