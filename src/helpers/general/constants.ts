@@ -1,4 +1,4 @@
-import { Colors, ColorTypes } from './types';
+import { Colors, ColorTypes, IRestaurantInfo } from './types';
 
 export enum ScreenRoutes {
   HOME = '/',
@@ -35,3 +35,18 @@ export const ColorPalette: Record<Colors, ColorTypes> = {
     secondary: '#f8fafc',
   },
 };
+
+const getMockRestaurants = (): IRestaurantInfo[] => {
+  return [...Array(6)].map((_, index) => ({
+    id: index.toString(),
+    icon: `https://source.unsplash.com/random/50x50/?restaurant+${index}`,
+    name: `#${index} Restaurant`,
+    address: 'X Street and the cross site of the building Avanos/Nevsehir',
+    description: 'Lorme ipmsum description Lorme ipmsum description Lorme ipmsum description ',
+    opening_hours: '',
+    rating: 0,
+    reviews: [],
+  }));
+};
+
+export const MOCK_RESTAURANTS_INFO: IRestaurantInfo[] = getMockRestaurants();
