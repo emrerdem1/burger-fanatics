@@ -47,7 +47,7 @@ export const apiSlice = createApi({
         method: 'POST',
         body: { data: review },
       }),
-      invalidatesTags: [ApiTags.REVIEW, ApiTags.RESTAURANT],
+      invalidatesTags: [ApiTags.RATING, ApiTags.REVIEW, ApiTags.RESTAURANT],
     }),
     login: builder.mutation<UserResponse, UserCredentialRequest>({
       query: (credentials) => ({
