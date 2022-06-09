@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { IRestaurantInfo } from 'helpers/general/types';
 import { ColorPalette } from 'helpers/general/constants';
@@ -10,13 +10,18 @@ interface IRestaurantReviewBodyProps {
 }
 
 const RestaurantReviewBody: React.FC<IRestaurantReviewBodyProps> = ({ info }) => {
+  const reviews = useMemo(
+    () =>
+      info.reviews.data.map((review) => (
+        <RestaurantReviewView key={review.id} reviewData={review.attributes} />
+      )),
+    [info.reviews.data],
+  );
+
   return (
     <>
       <AddReviewView />
-      <ReviewContainerDiv>
-        <RestaurantReviewView rating={info.rating_avg} />
-        <RestaurantReviewView rating={info.rating_avg} />
-      </ReviewContainerDiv>
+      <ReviewContainerDiv>{reviews}</ReviewContainerDiv>
     </>
   );
 };

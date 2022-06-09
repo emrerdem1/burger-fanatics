@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
   IRestaurantInfo,
-  IRestaurantsResponse,
+  IBaseApiResponse,
   IReviews,
+  RegisterCredentials,
   UserCredentialRequest,
   UserResponse,
 } from 'helpers/general/types';
@@ -11,15 +12,15 @@ import { ApiRoutes, ApiTags } from './constants';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'api/v2',
+    baseUrl: 'http://localhost:1337/api',
     prepareHeaders: (headers) => {
       headers.set('authorization', `Bearer ${process.env.REACT_APP_API_KEY}`);
       return headers;
     },
   }),
-  tagTypes: [ApiTags.REVIEW, ApiTags.RESTAURANT],
+  tagTypes: [ApiTags.USER, ApiTags.REVIEW, ApiTags.RESTAURANT],
   endpoints: (builder) => ({
-    getRestaurants: builder.query<IRestaurantsResponse, void>({
+    getRestaurants: builder.query<IBaseApiResponse<IRestaurantInfo>, void>({
       query: () => ApiRoutes.RESTAURANTS,
       providesTags: [ApiTags.RESTAURANT],
     }),
@@ -41,13 +42,15 @@ export const apiSlice = createApi({
         method: 'POST',
         body: credentials,
       }),
+      invalidatesTags: [ApiTags.USER],
     }),
-    signup: builder.mutation<UserResponse, UserCredentialRequest>({
+    signup: builder.mutation<UserResponse, RegisterCredentials>({
       query: (credentials) => ({
         url: ApiRoutes.SIGNUP,
         method: 'POST',
         body: credentials,
       }),
+      invalidatesTags: [ApiTags.USER],
     }),
   }),
 });

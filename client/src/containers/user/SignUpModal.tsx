@@ -10,12 +10,13 @@ const SignUpModal = () => {
   const [signup] = useSignupMutation();
 
   const submitForm = async (values: FormFields) => {
+    console.log(values[FormFields.USERNAME]);
     try {
       await signup({
         email: values[FormFields.EMAIL],
         password: values[FormFields.PASSWORD],
+        username: values[FormFields.USERNAME],
       }).unwrap();
-      console.log(values);
       toggleVisibility();
       message.success('You signed up, enjoy!');
     } catch (error) {
@@ -36,7 +37,7 @@ const SignUpModal = () => {
           onFinish={submitForm}
           autoComplete='off'
         >
-          <UserFormFields />
+          <UserFormFields hasUsername />
           <Form.Item style={{ textAlign: 'center', margin: 0 }}>
             <Button type='primary' htmlType='submit' style={{ width: 100 }}>
               Sign up

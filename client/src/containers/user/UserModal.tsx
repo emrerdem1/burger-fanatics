@@ -11,7 +11,6 @@ const UserModalView: React.FC<IUserModalProps> = ({ submitText }) => {
   const [form] = Form.useForm();
 
   const submitForm = (values: FormFields) => {
-    console.log(values);
     setIsModalShown(false);
     message.success('Logged in successfully. Welcome!');
   };

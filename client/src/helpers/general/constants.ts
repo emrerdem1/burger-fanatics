@@ -1,4 +1,4 @@
-import { Colors, ColorTypes, IRestaurantInfo, IRestaurantsResponse } from './types';
+import { Colors, ColorTypes } from './types';
 
 export enum ScreenRoutes {
   HOME = '/',
@@ -36,7 +36,7 @@ export const ColorPalette: Record<Colors, ColorTypes> = {
   },
 };
 
-const getMockRestaurants = (): IRestaurantInfo[] => {
+const getMockRestaurants = (): any[] => {
   return [...Array(6)].map((_, index) => ({
     id: index.toString(),
     icon: `https://source.unsplash.com/random/50x50/?restaurant+${index}`,
@@ -62,7 +62,7 @@ const getMockRestaurants = (): IRestaurantInfo[] => {
   }));
 };
 
-export const MOCK_RESTAURANTS: IRestaurantsResponse = {
+export const MOCK_RESTAURANTS = {
   data: getMockRestaurants().map((res, idx) => ({ id: idx.toString(), attributes: res })),
   meta: [],
 };

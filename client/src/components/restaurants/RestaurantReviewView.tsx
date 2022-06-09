@@ -4,28 +4,13 @@ import { ColorPalette } from 'helpers/general/constants';
 import styled from '@emotion/styled';
 import { Image, Typography } from 'antd';
 import FALLBACK_IMAGE from 'assets/images/fallback-image.png';
-import { IRestaurantInfo } from 'helpers/general/types';
-
-const DEFAULT_IMAGE =
-  'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png';
-const DEFAULT_COMMENT = `Do you find yourself struggling more than usual with the current ongoing situation or is it
-  an illusiation to you? Do you find yourself struggling more than usual with the current
-  ongoing situation or is it an illusiation to you? Do you find yourself struggling more than
-  usual with the current ongoing situation or is it an illusiation to you?s`;
+import { IReviews } from 'helpers/general/types';
 
 interface IRestaurantReviewViewProps {
-  rating: IRestaurantInfo['rating_avg'];
-  comment?: string;
-  image?: string;
-  reviewed_by?: string;
+  reviewData: IReviews;
 }
 
-const RestaurantReviewView: React.FC<IRestaurantReviewViewProps> = ({
-  rating,
-  comment,
-  image,
-  reviewed_by,
-}) => {
+const RestaurantReviewView: React.FC<IRestaurantReviewViewProps> = ({ reviewData }) => {
   return (
     <CustomCard
       margin='12px 0'
@@ -33,15 +18,15 @@ const RestaurantReviewView: React.FC<IRestaurantReviewViewProps> = ({
       border={`2px solid ${ColorPalette.white.secondary}`}
     >
       <ReviewHeaderDiv>
-        <span>{rating} / 5</span>
+        <span>{reviewData.rating.data.attributes.rating_avg} / 5</span>
         <span>
-          Reviewed by: <strong>{reviewed_by || 'Emre'}</strong>
+          Reviewed by: <strong>{reviewData.reviewed_by.data.attributes.username}</strong>
         </span>
       </ReviewHeaderDiv>
       <Typography.Paragraph ellipsis={{ rows: 3, expandable: true, symbol: 'Read more...' }}>
-        {comment || DEFAULT_COMMENT}
+        {reviewData.comment}
       </Typography.Paragraph>
-      <Image width={70} fallback={FALLBACK_IMAGE} src={image || DEFAULT_IMAGE} />
+      <Image width={70} fallback={FALLBACK_IMAGE} src={reviewData.image} />
     </CustomCard>
   );
 };

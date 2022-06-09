@@ -12,10 +12,9 @@ const LoginModal = () => {
   const submitForm = async (values: FormFields) => {
     try {
       await login({
-        email: values[FormFields.EMAIL],
+        identifier: values[FormFields.EMAIL],
         password: values[FormFields.PASSWORD],
       }).unwrap();
-      console.log(values);
       toggleVisibility();
       message.success('Logged in successfully. Welcome!');
     } catch (error) {

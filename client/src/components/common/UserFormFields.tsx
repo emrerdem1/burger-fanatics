@@ -3,12 +3,32 @@ import { Form, Input } from 'antd';
 
 export enum FormFields {
   EMAIL = 'email',
+  USERNAME = 'username',
   PASSWORD = 'password',
 }
 
-const UserFormFields: React.FC = () => {
+interface IUserFormFieldsProps {
+  hasUsername?: boolean;
+}
+
+const UserFormFields: React.FC<IUserFormFieldsProps> = ({ hasUsername }) => {
   return (
     <>
+      {hasUsername && (
+        <Form.Item
+          label='Username'
+          name={FormFields.USERNAME}
+          required
+          rules={[
+            {
+              required: true,
+              message: 'Please type an username.',
+            },
+          ]}
+        >
+          <Input placeholder='Your username...' maxLength={20} />
+        </Form.Item>
+      )}
       <Form.Item
         label='Email'
         name={FormFields.EMAIL}
@@ -24,7 +44,7 @@ const UserFormFields: React.FC = () => {
           },
         ]}
       >
-        <Input placeholder='Your email...' maxLength={30} />
+        <Input placeholder='Your email...' maxLength={50} />
       </Form.Item>
       <Form.Item
         label='Password'
@@ -37,7 +57,7 @@ const UserFormFields: React.FC = () => {
           },
         ]}
       >
-        <Input.Password placeholder='Your password...' />
+        <Input.Password placeholder='Your password...' minLength={6} />
       </Form.Item>
     </>
   );
