@@ -10,7 +10,6 @@ const SignUpModal = () => {
   const [signup] = useSignupMutation();
 
   const submitForm = async (values: FormFields) => {
-    console.log(values[FormFields.USERNAME]);
     try {
       await signup({
         email: values[FormFields.EMAIL],

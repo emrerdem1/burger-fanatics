@@ -13,7 +13,6 @@ interface IRestaurantReviewViewProps {
 }
 
 const RestaurantReviewView: React.FC<IRestaurantReviewViewProps> = ({ reviewData }) => {
-  console.log(reviewData);
   return (
     <CustomCard
       margin='12px 0'
