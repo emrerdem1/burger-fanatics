@@ -35,34 +35,3 @@ export const ColorPalette: Record<Colors, ColorTypes> = {
     secondary: '#f8fafc',
   },
 };
-
-const getMockRestaurants = (): any[] => {
-  return [...Array(6)].map((_, index) => ({
-    id: index.toString(),
-    icon: `https://source.unsplash.com/random/50x50/?restaurant+${index}`,
-    name: `#${index} Restaurant`,
-    address: 'X Street and the cross site of the building Avanos/Nevsehir',
-    description: 'Lorme ipmsum description Lorme ipmsum description Lorme ipmsum description ',
-    opening_hours: '',
-    rating_avg: 2,
-    reviews: [
-      {
-        id: index.toString(),
-        image: `https://source.unsplash.com/random/50x50/?restaurant+${index}`,
-        comment: 'Aman tanrım neler oluyor burada',
-        reviewed_by: { id: index.toString(), name: '1 User' },
-        rating: {
-          rating_avg: 1,
-          taste: 1,
-          texture: 1,
-          visual: 1,
-        },
-      },
-    ],
-  }));
-};
-
-export const MOCK_RESTAURANTS = {
-  data: getMockRestaurants().map((res, idx) => ({ id: idx.toString(), attributes: res })),
-  meta: [],
-};

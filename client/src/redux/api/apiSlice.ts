@@ -2,10 +2,12 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
   IRestaurantInfo,
   IBaseApiResponse,
-  IReviews,
   RegisterCredentials,
   UserCredentialRequest,
   UserResponse,
+  IAddReviewSpec,
+  IReviewRating,
+  IReviewRatingResponse,
 } from 'helpers/general/types';
 import { ApiRoutes, ApiTags } from './constants';
 
@@ -18,7 +20,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: [ApiTags.USER, ApiTags.REVIEW, ApiTags.RESTAURANT],
+  tagTypes: [ApiTags.USER, ApiTags.RATING, ApiTags.REVIEW, ApiTags.RESTAURANT],
   endpoints: (builder) => ({
     getRestaurants: builder.query<IBaseApiResponse<IRestaurantInfo>, void>({
       query: () => ApiRoutes.RESTAURANTS,
@@ -28,11 +30,19 @@ export const apiSlice = createApi({
       query: (restaurantId: string) => `${ApiRoutes.REVIEWS}/${restaurantId}`,
       providesTags: [ApiTags.REVIEW],
     }),
-    addNewReview: builder.mutation<boolean, IReviews>({
+    addRating: builder.mutation<IReviewRatingResponse, IReviewRating>({
+      query: (review) => ({
+        url: ApiRoutes.RATING,
+        method: 'POST',
+        body: { data: review },
+      }),
+      invalidatesTags: [ApiTags.RATING],
+    }),
+    addNewReview: builder.mutation<void, IAddReviewSpec>({
       query: (review) => ({
         url: ApiRoutes.REVIEWS,
         method: 'POST',
-        body: review,
+        body: { data: review },
       }),
       invalidatesTags: [ApiTags.REVIEW],
     }),
@@ -61,4 +71,5 @@ export const {
   useAddNewReviewMutation,
   useLoginMutation,
   useSignupMutation,
+  useAddRatingMutation,
 } = apiSlice;

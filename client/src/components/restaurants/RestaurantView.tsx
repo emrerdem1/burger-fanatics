@@ -9,17 +9,23 @@ import { Breakpoints, ColorPalette } from 'helpers/general/constants';
 import RestaurantInfoBody from './RestaurantInfoBody';
 import { DownOutlined, RightOutlined } from '@ant-design/icons';
 import useToggle from 'hooks/useToggle';
+import AddReviewView from './add-review/AddReviewView';
 
 interface IRestaurantViewProps {
+  restaurantId: string;
   restaurant: IRestaurantInfo;
 }
 
-const RestaurantView: React.FC<IRestaurantViewProps> = ({ restaurant }) => {
+const RestaurantView: React.FC<IRestaurantViewProps> = ({ restaurant, restaurantId }) => {
   const { isShown, toggleVisibility } = useToggle();
   const { restaurantDetails, restaurantReviews } = useMemo(
     () => ({
       restaurantDetails: <RestaurantInfoBody info={restaurant} />,
-      restaurantReviews: <RestaurantReviewBody info={restaurant} />,
+      restaurantReviews: (
+        <RestaurantReviewBody info={restaurant}>
+          <AddReviewView selectedRestaurantId={restaurantId} />
+        </RestaurantReviewBody>
+      ),
     }),
     [restaurant],
   );

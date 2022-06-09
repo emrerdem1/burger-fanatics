@@ -10,7 +10,11 @@ const RestaurantsListView = () => {
   const restaurantList = useMemo(
     () =>
       data?.data.map((restaurant) => (
-        <RestaurantView restaurant={restaurant.attributes} key={restaurant.id} />
+        <RestaurantView
+          key={restaurant.id}
+          restaurant={restaurant.attributes}
+          restaurantId={restaurant.id}
+        />
       )),
     [data?.data],
   );

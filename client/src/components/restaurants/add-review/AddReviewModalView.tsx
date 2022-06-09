@@ -5,10 +5,12 @@ import AddReviewForm from './AddReviewForm';
 interface IAddReviewModalProps {
   isModalVisible: boolean;
   setIsModalVisible: (isVisible: boolean) => void;
+  selectedRestaurantId: string;
 }
 const AddReviewModalView: React.FC<IAddReviewModalProps> = ({
   isModalVisible,
   setIsModalVisible,
+  selectedRestaurantId,
 }) => {
   const cancelModal = useCallback(() => {
     setIsModalVisible(false);
@@ -21,7 +23,7 @@ const AddReviewModalView: React.FC<IAddReviewModalProps> = ({
       onCancel={cancelModal}
       footer={null}
     >
-      <AddReviewForm cancelModal={cancelModal} />
+      <AddReviewForm cancelModal={cancelModal} selectedRestaurantId={selectedRestaurantId} />
     </Modal>
   );
 };

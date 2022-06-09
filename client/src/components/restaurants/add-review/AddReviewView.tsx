@@ -3,7 +3,11 @@ import { Button, Tooltip } from 'antd';
 import AddReviewModalView from './AddReviewModalView';
 import { useAuth } from 'hooks/useAuth';
 
-const AddReviewView = () => {
+interface IAddReviewViewProps {
+  selectedRestaurantId: string;
+}
+
+const AddReviewView: React.FC<IAddReviewViewProps> = ({ selectedRestaurantId }) => {
   const { user } = useAuth();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -18,7 +22,11 @@ const AddReviewView = () => {
           Add your own review
         </Button>
       </Tooltip>
-      <AddReviewModalView isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} />
+      <AddReviewModalView
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        selectedRestaurantId={selectedRestaurantId}
+      />
     </>
   );
 };

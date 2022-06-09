@@ -3,13 +3,14 @@ import styled from '@emotion/styled';
 import { IRestaurantInfo } from 'helpers/general/types';
 import { ColorPalette } from 'helpers/general/constants';
 import RestaurantReviewView from './RestaurantReviewView';
-import AddReviewView from './add-review/AddReviewView';
 
 interface IRestaurantReviewBodyProps {
   info: Omit<IRestaurantInfo, 'name' | 'icon'>;
+  children: React.ReactNode;
 }
 
-const RestaurantReviewBody: React.FC<IRestaurantReviewBodyProps> = ({ info }) => {
+const RestaurantReviewBody: React.FC<IRestaurantReviewBodyProps> = ({ info, children }) => {
+  console.log('ooh body ', info);
   const reviews = useMemo(
     () =>
       info.reviews.data.map((review) => (
@@ -20,7 +21,7 @@ const RestaurantReviewBody: React.FC<IRestaurantReviewBodyProps> = ({ info }) =>
 
   return (
     <>
-      <AddReviewView />
+      {children}
       <ReviewContainerDiv>{reviews}</ReviewContainerDiv>
     </>
   );

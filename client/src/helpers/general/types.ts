@@ -3,16 +3,20 @@ interface IReviewUser {
   email: string;
 }
 
-interface IReviewRating {
-  rating_avg: number;
+export interface IReviewRating {
+  rating_avg: string;
   taste: number;
   texture: number;
   visual: number;
 }
 
-interface IReviewsByRestaurant {
-  restaurant_id: string;
-  reviews: IReviews[];
+export interface IReviewRatingResponse {
+  id: string;
+  rating_avg: string;
+  taste: string;
+  texture: string;
+  visual: string;
+  createdBy: User;
 }
 
 export interface User {
@@ -25,21 +29,6 @@ export interface UserCredentialRequest {
   identifier: string;
   password: string;
 }
-
-/**
- *
-jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjU0NzYzODk5LCJleHAiOjE2NTczNTU4OTl9.LLIRX_SFQzSbz15JlH-ZPVljvdF5CJN2krK_Yc39z1A"
-user: {id: 5, username: "asdasd", email: "admin@gmail.com", provider: "local", confirmed: true,…}
-blocked: false
-confirmed: true
-createdAt: "2022-06-09T08:38:19.858Z"
-email: "admin@gmail.com"
-id: 5
-provider: "local"
-role: {id: 1, name: "Authenticated", description: "Default role given to authenticated user.",…}
-updatedAt: "2022-06-09T08:38:19.858Z"
-username: "asdasd"
-*/
 
 export interface RegisterCredentials {
   email: string;
@@ -57,6 +46,17 @@ export interface IReviews {
   comment: string;
   rating: IBaseApiResponseSingular<IReviewRating>;
   reviewed_by: IBaseApiResponseSingular<IReviewUser>;
+}
+
+export interface IAddReviewSpec {
+  image: string;
+  comment: string;
+  // "rating" relaation id.
+  rating: number;
+  // "review" relation id.
+  reviewed_by: number;
+  // "restaurant" relation id.
+  restaurant: number;
 }
 
 export interface IRestaurantInfo {

@@ -1,7 +1,9 @@
 import React from 'react';
 import { HeartOutlined, SmileOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Rate } from 'antd';
+import { Button, Form, Input, message, Rate } from 'antd';
 import UploadImageInput from './UploadImageInput';
+import { useAddNewReviewMutation, useAddRatingMutation } from 'redux/api/apiSlice';
+import { useAuth } from 'hooks/useAuth';
 
 enum FormItemNames {
   PHOTO = 'photo',
@@ -11,19 +13,45 @@ enum FormItemNames {
   RATING_TEXTURE = 'rating_texture',
 }
 
+const _getRatingAverage = (ratings: number[]) =>
+  (ratings.reduce((acc, curr) => acc + curr, 0) / ratings.length).toFixed(2);
+
 interface IAddReviewFormProps {
   cancelModal: () => void;
+  selectedRestaurantId: string;
 }
 
-const AddReviewForm: React.FC<IAddReviewFormProps> = ({ cancelModal }) => {
-  const imageRef = React.useRef<HTMLInputElement | null>(null);
+const AddReviewForm: React.FC<IAddReviewFormProps> = ({ cancelModal, selectedRestaurantId }) => {
+  const imageRef = React.useRef<HTMLInputElement | string>('');
   const [form] = Form.useForm();
+  const [addRating] = useAddRatingMutation();
+  const [addNewReview] = useAddNewReviewMutation();
+  const { user } = useAuth();
 
-  const saveReview = (values: FormItemNames) => {
-    console.log(imageRef.current);
-    console.log('Received values of form: ', values);
-    cancelModal();
-    form.resetFields();
+  const saveReview = async (values: FormItemNames) => {
+    try {
+      const { id: ratingId } = await addRating({
+        rating_avg: _getRatingAverage([
+          values[FormItemNames.RATING_TASTE],
+          values[FormItemNames.RATING_VISUAL],
+          values[FormItemNames.RATING_TEXTURE],
+        ]).toString(),
+        taste: values[FormItemNames.RATING_TASTE].toString(),
+        texture: values[FormItemNames.RATING_TEXTURE].toString(),
+        visual: values[FormItemNames.RATING_VISUAL].toString(),
+      }).unwrap();
+      await addNewReview({
+        comment: values[FormItemNames.COMMENT],
+        image: imageRef.current as string,
+        rating: Number(ratingId),
+        reviewed_by: Number(user!.id),
+        restaurant: Number(selectedRestaurantId),
+      }).unwrap();
+      cancelModal();
+      form.resetFields();
+    } catch (e) {
+      message.error('Something went wrong. Please try again.');
+    }
   };
 
   return (
