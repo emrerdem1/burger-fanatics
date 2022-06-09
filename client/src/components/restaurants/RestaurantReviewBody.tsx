@@ -10,7 +10,6 @@ interface IRestaurantReviewBodyProps {
 }
 
 const RestaurantReviewBody: React.FC<IRestaurantReviewBodyProps> = ({ info, children }) => {
-  console.log('ooh body ', info);
   const reviews = useMemo(
     () =>
       info.reviews.data.map((review) => (

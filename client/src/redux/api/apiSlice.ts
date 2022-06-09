@@ -11,10 +11,13 @@ import {
 } from 'helpers/general/types';
 import { ApiRoutes, ApiTags } from './constants';
 
+const BASE_API_URL =
+  process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : 'http://localhost:1337';
+
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:1337/api',
+    baseUrl: `${BASE_API_URL}/api`,
     prepareHeaders: (headers) => {
       headers.set('authorization', `Bearer ${process.env.REACT_APP_API_KEY}`);
       return headers;

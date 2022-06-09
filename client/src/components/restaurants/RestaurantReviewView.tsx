@@ -6,11 +6,14 @@ import { Image, Typography } from 'antd';
 import FALLBACK_IMAGE from 'assets/images/fallback-image.png';
 import { IReviews } from 'helpers/general/types';
 
+const _hasValidReviewImage = (image: string) => image && image !== '-';
+
 interface IRestaurantReviewViewProps {
   reviewData: IReviews;
 }
 
 const RestaurantReviewView: React.FC<IRestaurantReviewViewProps> = ({ reviewData }) => {
+  console.log(reviewData);
   return (
     <CustomCard
       margin='12px 0'
@@ -18,15 +21,17 @@ const RestaurantReviewView: React.FC<IRestaurantReviewViewProps> = ({ reviewData
       border={`2px solid ${ColorPalette.white.secondary}`}
     >
       <ReviewHeaderDiv>
-        <span>{reviewData.rating.data.attributes.rating_avg} / 5</span>
+        <span>{reviewData.rating.data?.attributes.rating_avg || '-'} / 5</span>
         <span>
-          Reviewed by: <strong>{reviewData.reviewed_by.data.attributes.username}</strong>
+          Reviewed by: <strong>{reviewData.reviewed_by.data?.attributes.username}</strong>
         </span>
       </ReviewHeaderDiv>
       <Typography.Paragraph ellipsis={{ rows: 3, expandable: true, symbol: 'Read more...' }}>
         {reviewData.comment}
       </Typography.Paragraph>
-      <Image width={70} fallback={FALLBACK_IMAGE} src={reviewData.image} />
+      {_hasValidReviewImage(reviewData.image) && (
+        <Image width={70} fallback={FALLBACK_IMAGE} src={reviewData.image} />
+      )}
     </CustomCard>
   );
 };
