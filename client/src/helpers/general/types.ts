@@ -20,6 +20,21 @@ interface IRestaurantsData {
   id: string;
 }
 
+export interface User {
+  id: string;
+  email: string;
+}
+
+export interface UserCredentialRequest {
+  email: string;
+  password: string;
+}
+
+export interface UserResponse {
+  user: User;
+  token: string;
+}
+
 export interface IReviews {
   id: string;
   image: string;

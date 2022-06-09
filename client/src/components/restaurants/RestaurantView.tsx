@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { IRestaurantInfo } from 'helpers/general/types';
 import { CustomCard } from 'components/common/styled/Card.styled';
 import RestaurantReviewBody from './RestaurantReviewBody';
@@ -8,18 +8,14 @@ import { Button } from 'antd';
 import { Breakpoints, ColorPalette } from 'helpers/general/constants';
 import RestaurantInfoBody from './RestaurantInfoBody';
 import { DownOutlined, RightOutlined } from '@ant-design/icons';
+import useToggle from 'hooks/useToggle';
 
 interface IRestaurantViewProps {
   restaurant: IRestaurantInfo;
 }
 
 const RestaurantView: React.FC<IRestaurantViewProps> = ({ restaurant }) => {
-  const [isReviewsShown, setIsReviewsShown] = useState(false);
-
-  const toggleReviews = useCallback(() => {
-    setIsReviewsShown((isShown) => !isShown);
-  }, []);
-
+  const { isShown, toggleVisibility } = useToggle();
   const { restaurantDetails, restaurantReviews } = useMemo(
     () => ({
       restaurantDetails: <RestaurantInfoBody info={restaurant} />,
@@ -32,14 +28,14 @@ const RestaurantView: React.FC<IRestaurantViewProps> = ({ restaurant }) => {
     <CustomCard padding='16px 26px' padding_sm='16px 16px' margin='12px 0'>
       <RestaurantHeaderView icon={restaurant.icon} name={restaurant.name}>
         <ToggleReviewsButton
-          onClick={toggleReviews}
-          icon={isReviewsShown ? <DownOutlined /> : <RightOutlined />}
+          onClick={toggleVisibility}
+          icon={isShown ? <DownOutlined /> : <RightOutlined />}
         >
-          {isReviewsShown ? 'Back to the Info' : 'See Reviews'}
+          {isShown ? 'Back to the Info' : 'See Reviews'}
         </ToggleReviewsButton>
       </RestaurantHeaderView>
-      <VisibilityTogglerDiv shouldShow={!isReviewsShown}>{restaurantDetails}</VisibilityTogglerDiv>
-      <VisibilityTogglerDiv shouldShow={isReviewsShown}>{restaurantReviews}</VisibilityTogglerDiv>
+      <VisibilityTogglerDiv shouldShow={!isShown}>{restaurantDetails}</VisibilityTogglerDiv>
+      <VisibilityTogglerDiv shouldShow={isShown}>{restaurantReviews}</VisibilityTogglerDiv>
     </CustomCard>
   );
 };

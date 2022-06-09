@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { ColorPalette } from 'helpers/general/constants';
+import { useGetRestaurantsQuery } from 'redux/api/apiSlice';
 
 const SearchStatisticsView = () => {
-  return <StatisticDiv>55 restaurant found</StatisticDiv>;
+  const { data, isSuccess } = useGetRestaurantsQuery();
+
+  if (!isSuccess) return null;
+
+  return <StatisticDiv>{data?.data.length} restaurant found</StatisticDiv>;
 };
 
 const StatisticDiv = styled.div`

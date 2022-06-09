@@ -4,6 +4,8 @@ export enum ApiTags {
 }
 
 export enum ApiRoutes {
+  LOGIN = '/login',
+  SIGNUP = '/signup',
   REVIEWS = '/reviews',
   RESTAURANTS = '/restaurants',
 }
