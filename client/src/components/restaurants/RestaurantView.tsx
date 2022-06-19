@@ -10,6 +10,7 @@ import RestaurantInfoBody from './RestaurantInfoBody';
 import { DownOutlined, RightOutlined } from '@ant-design/icons';
 import useToggle from 'hooks/useToggle';
 import AddReviewView from './add-review/AddReviewView';
+import RestaurantStatisticsView from './RestaurantStatisticsView';
 
 interface IRestaurantViewProps {
   restaurantId: string;
@@ -18,16 +19,24 @@ interface IRestaurantViewProps {
 
 const RestaurantView: React.FC<IRestaurantViewProps> = ({ restaurant, restaurantId }) => {
   const { isShown, toggleVisibility } = useToggle();
+
   const { restaurantDetails, restaurantReviews } = useMemo(
     () => ({
-      restaurantDetails: <RestaurantInfoBody info={restaurant} />,
+      restaurantDetails: (
+        <RestaurantInfoBody address={restaurant.address} description={restaurant.description}>
+          <RestaurantStatisticsView
+            reviews={restaurant.reviews.data}
+            opening_hours={restaurant.opening_hours}
+          />
+        </RestaurantInfoBody>
+      ),
       restaurantReviews: (
         <RestaurantReviewBody info={restaurant}>
           <AddReviewView selectedRestaurantId={restaurantId} />
         </RestaurantReviewBody>
       ),
     }),
-    [restaurant],
+    [restaurant, restaurantId],
   );
 
   return (

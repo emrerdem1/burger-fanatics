@@ -1,29 +1,30 @@
 import React from 'react';
-import RestaurantStatisticsView from './RestaurantStatisticsView';
 import { Divider, Typography } from 'antd';
 import { IRestaurantInfo } from 'helpers/general/types';
 import styled from '@emotion/styled';
 import { ColorPalette } from 'helpers/general/constants';
 
 interface IRestaurantInfoBodyProps {
-  info: Omit<IRestaurantInfo, 'name' | 'icon'>;
+  address: IRestaurantInfo['address'];
+  description: IRestaurantInfo['description'];
+  children: React.ReactNode;
 }
 
-const RestaurantInfoBody: React.FC<IRestaurantInfoBodyProps> = ({ info }) => {
+const RestaurantInfoBody: React.FC<IRestaurantInfoBodyProps> = ({
+  address,
+  description,
+  children,
+}) => {
   return (
     <div>
       <InfoDetailDiv>
-        <Typography.Paragraph>{info.description}</Typography.Paragraph>
+        <Typography.Paragraph>{description}</Typography.Paragraph>
         <Typography.Paragraph>
-          <Typography.Text strong>Address:</Typography.Text> {info.address}
+          <Typography.Text strong>Address:</Typography.Text> {address}
         </Typography.Paragraph>
       </InfoDetailDiv>
       <Divider />
-      <RestaurantStatisticsView
-        rating={info.rating_avg}
-        reviewCount={info.reviews.data.length}
-        opening_hours={info.opening_hours}
-      />
+      {children}
     </div>
   );
 };

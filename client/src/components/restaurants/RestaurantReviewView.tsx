@@ -20,7 +20,7 @@ const RestaurantReviewView: React.FC<IRestaurantReviewViewProps> = ({ reviewData
       border={`2px solid ${ColorPalette.white.secondary}`}
     >
       <ReviewHeaderDiv>
-        <span>{reviewData.rating.data?.attributes.rating_avg || '-'} / 5</span>
+        <span>{reviewData.rating.rating_avg || '-'} / 5</span>
         <span>
           Reviewed by: <strong>{reviewData.reviewed_by.data?.attributes.username}</strong>
         </span>

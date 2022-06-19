@@ -6,8 +6,6 @@ import {
   UserCredentialRequest,
   UserResponse,
   IAddReviewSpec,
-  IReviewRating,
-  IReviewRatingResponse,
 } from 'helpers/general/types';
 import { ApiRoutes, ApiTags } from './constants';
 
@@ -18,10 +16,6 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_API_URL}/api`,
-    prepareHeaders: (headers) => {
-      headers.set('authorization', `Bearer ${process.env.REACT_APP_API_KEY}`);
-      return headers;
-    },
   }),
   tagTypes: [ApiTags.USER, ApiTags.RATING, ApiTags.REVIEW, ApiTags.RESTAURANT],
   endpoints: (builder) => ({
@@ -32,14 +26,6 @@ export const apiSlice = createApi({
     getReviewsByRestaurant: builder.query<IRestaurantInfo, string>({
       query: (restaurantId: string) => `${ApiRoutes.REVIEWS}/${restaurantId}`,
       providesTags: [ApiTags.REVIEW],
-    }),
-    addRating: builder.mutation<IReviewRatingResponse, IReviewRating>({
-      query: (review) => ({
-        url: ApiRoutes.RATING,
-        method: 'POST',
-        body: { data: review },
-      }),
-      invalidatesTags: [ApiTags.RATING],
     }),
     addNewReview: builder.mutation<void, IAddReviewSpec>({
       query: (review) => ({
@@ -74,5 +60,4 @@ export const {
   useAddNewReviewMutation,
   useLoginMutation,
   useSignupMutation,
-  useAddRatingMutation,
 } = apiSlice;

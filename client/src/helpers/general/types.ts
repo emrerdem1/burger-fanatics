@@ -3,20 +3,15 @@ interface IReviewUser {
   email: string;
 }
 
+interface IBaseApiResponseSingular<T> {
+  data: IBaseApiData<T>;
+}
+
 export interface IReviewRating {
-  rating_avg: string;
+  rating_avg: number;
   taste: number;
   texture: number;
   visual: number;
-}
-
-export interface IReviewRatingResponse {
-  id: string;
-  rating_avg: string;
-  taste: string;
-  texture: string;
-  visual: string;
-  createdBy: User;
 }
 
 export interface User {
@@ -44,15 +39,14 @@ export interface UserResponse {
 export interface IReviews {
   image: string;
   comment: string;
-  rating: IBaseApiResponseSingular<IReviewRating>;
+  rating: IReviewRating;
   reviewed_by: IBaseApiResponseSingular<IReviewUser>;
 }
 
 export interface IAddReviewSpec {
   image: string;
   comment: string;
-  // "rating" relaation id.
-  rating: number;
+  rating: IReviewRating;
   // "review" relation id.
   reviewed_by: number;
   // "restaurant" relation id.
@@ -69,13 +63,9 @@ export interface IRestaurantInfo {
   reviews: IBaseApiResponse<IReviews>;
 }
 
-interface IBaseApiData<T> {
+export interface IBaseApiData<T> {
   attributes: T;
   id: string;
-}
-
-interface IBaseApiResponseSingular<T> {
-  data: IBaseApiData<T>;
 }
 
 export interface IBaseApiResponse<T> {

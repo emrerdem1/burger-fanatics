@@ -2,19 +2,9 @@ import React from 'react';
 import { HeartOutlined, SmileOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message, Rate } from 'antd';
 import UploadImageInput from './UploadImageInput';
-import { useAddNewReviewMutation, useAddRatingMutation } from 'redux/api/apiSlice';
+import { useAddNewReviewMutation } from 'redux/api/apiSlice';
 import { useAuth } from 'hooks/useAuth';
-
-enum FormItemNames {
-  PHOTO = 'photo',
-  COMMENT = 'comment',
-  RATING_TASTE = 'rating_taste',
-  RATING_VISUAL = 'rating_visual',
-  RATING_TEXTURE = 'rating_texture',
-}
-
-const _getRatingAverage = (ratings: number[]) =>
-  (ratings.reduce((acc, curr) => acc + curr, 0) / ratings.length).toFixed(2);
+import { FormItemNames, getRatingPayload, IFormValues } from './AddReviewForm.helper';
 
 interface IAddReviewFormProps {
   cancelModal: () => void;
@@ -24,31 +14,25 @@ interface IAddReviewFormProps {
 const AddReviewForm: React.FC<IAddReviewFormProps> = ({ cancelModal, selectedRestaurantId }) => {
   const imageRef = React.useRef<HTMLInputElement | string>('');
   const [form] = Form.useForm();
-  const [addRating] = useAddRatingMutation();
-  const [addNewReview] = useAddNewReviewMutation();
   const { user } = useAuth();
+  const [addNewReview] = useAddNewReviewMutation();
 
-  const saveReview = async (values: FormItemNames) => {
+  const saveReview = async (values: IFormValues) => {
+    if (!user) return;
+
     try {
-      const { id: ratingId } = await addRating({
-        rating_avg: _getRatingAverage([
-          values[FormItemNames.RATING_TASTE],
-          values[FormItemNames.RATING_VISUAL],
-          values[FormItemNames.RATING_TEXTURE],
-        ]).toString(),
-        taste: values[FormItemNames.RATING_TASTE].toString(),
-        texture: values[FormItemNames.RATING_TEXTURE].toString(),
-        visual: values[FormItemNames.RATING_VISUAL].toString(),
-      }).unwrap();
+      const { comment, rating_taste, rating_visual, rating_texture } = values;
       await addNewReview({
-        comment: values[FormItemNames.COMMENT],
+        comment,
         image: imageRef.current as string,
-        rating: Number(ratingId),
-        reviewed_by: Number(user!.id),
+        rating: getRatingPayload({ rating_taste, rating_visual, rating_texture }),
+        reviewed_by: Number(user.id),
         restaurant: Number(selectedRestaurantId),
       }).unwrap();
       cancelModal();
       form.resetFields();
+      imageRef.current = '';
+      console.log('yes resetted ', imageRef.current);
     } catch (e) {
       message.error('Something went wrong. Please try again.');
     }

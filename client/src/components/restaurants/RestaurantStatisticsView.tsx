@@ -1,33 +1,37 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
 import { ColorPalette } from 'helpers/general/constants';
-import { IRestaurantInfo } from 'helpers/general/types';
+import { IBaseApiData, IRestaurantInfo, IReviews } from 'helpers/general/types';
 import { BarChartOutlined, FieldTimeOutlined, RadarChartOutlined } from '@ant-design/icons';
+import { getDecimalValue } from 'helpers/general/utils';
 
 interface IRestaurantStatisticsViewProps {
-  reviewCount: number;
-  rating: IRestaurantInfo['rating_avg'];
+  reviews: IBaseApiData<IReviews>[];
   opening_hours: IRestaurantInfo['opening_hours'];
 }
 
 const RestaurantStatisticsView: React.FC<IRestaurantStatisticsViewProps> = ({
-  rating,
-  reviewCount,
+  reviews,
   opening_hours,
 }) => {
+  const ratingAverage = useMemo(() => {
+    const ratings = reviews.map((review) => review.attributes.rating.rating_avg);
+    return getDecimalValue(ratings);
+  }, [reviews]);
+
   return (
     <CardFooterDiv>
       <BoxDiv>
         <div>
           <RadarChartOutlined /> <strong>Rating: </strong>
         </div>
-        <span className='detail-data'>{rating}</span>
+        <span className='detail-data'>{ratingAverage}</span>
       </BoxDiv>
       <BoxDiv>
         <div>
           <BarChartOutlined /> <strong>Reviews: </strong>
         </div>
-        <span className='detail-data'>{reviewCount} people</span>
+        <span className='detail-data'>{reviews.length} people</span>
       </BoxDiv>
       <BoxDiv>
         <div>

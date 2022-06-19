@@ -18,11 +18,6 @@
     "comment": {
       "type": "text"
     },
-    "rating": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::rating.rating"
-    },
     "reviewed_by": {
       "type": "relation",
       "relation": "manyToOne",
@@ -34,6 +29,9 @@
       "relation": "manyToOne",
       "target": "api::restaurant.restaurant",
       "inversedBy": "reviews"
+    },
+    "rating": {
+      "type": "json"
     }
   }
 }
