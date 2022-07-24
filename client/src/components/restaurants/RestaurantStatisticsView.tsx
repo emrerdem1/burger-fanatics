@@ -15,6 +15,8 @@ const RestaurantStatisticsView: React.FC<IRestaurantStatisticsViewProps> = ({
   opening_hours,
 }) => {
   const ratingAverage = useMemo(() => {
+    if (reviews.length === 0) return '-';
+
     const ratings = reviews.map((review) => review.attributes.rating.rating_avg);
     return getDecimalValue(ratings);
   }, [reviews]);

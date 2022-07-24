@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { HeartOutlined, SmileOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message, Rate } from 'antd';
-import UploadImageInput from './UploadImageInput';
+import UploadImageInput, { IUploadResult } from './UploadImageInput';
 import { useAddNewReviewMutation } from 'redux/api/apiSlice';
 import { useAuth } from 'hooks/useAuth';
 import { FormItemNames, getRatingPayload, IFormValues } from './AddReviewForm.helper';
@@ -12,7 +12,7 @@ interface IAddReviewFormProps {
 }
 
 const AddReviewForm: React.FC<IAddReviewFormProps> = ({ cancelModal, selectedRestaurantId }) => {
-  const imageRef = React.useRef<HTMLInputElement | string>('');
+  const imageRef = useRef<IUploadResult>(null);
   const [form] = Form.useForm();
   const { user } = useAuth();
   const [addNewReview] = useAddNewReviewMutation();
@@ -24,16 +24,16 @@ const AddReviewForm: React.FC<IAddReviewFormProps> = ({ cancelModal, selectedRes
       const { comment, rating_taste, rating_visual, rating_texture } = values;
       await addNewReview({
         comment,
-        image: imageRef.current as string,
+        image: imageRef.current?.image || '',
         rating: getRatingPayload({ rating_taste, rating_visual, rating_texture }),
         reviewed_by: Number(user.id),
         restaurant: Number(selectedRestaurantId),
       }).unwrap();
       cancelModal();
       form.resetFields();
-      imageRef.current = '';
-      console.log('yes resetted ', imageRef.current);
+      imageRef.current?.clearImage();
     } catch (e) {
+      console.error(e);
       message.error('Something went wrong. Please try again.');
     }
   };

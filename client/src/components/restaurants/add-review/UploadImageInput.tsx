@@ -34,11 +34,23 @@ const getBase64 = ({ e, onSuccess, onError }: TGetBase64): void => {
   reader.onerror = () => onError('Error occurred reading file.');
 };
 
-const UploadImageInput = forwardRef<Partial<HTMLInputElement>>(function UploadImageInput(_, ref) {
+export interface IUploadResult {
+  image: string;
+  clearImage: () => void;
+}
+
+const UploadImageInput = forwardRef<IUploadResult>((_, ref) => {
   const [imageFile, setImageFile] = React.useState<ImageFileProps>(INITIAL_IMAGE_STATE);
   const [errorMessage, setErrorMessage] = React.useState<string>('');
 
-  useImperativeHandle(ref, () => imageFile.base64, [imageFile.base64]);
+  useImperativeHandle(
+    ref,
+    () => ({
+      image: imageFile.base64,
+      clearImage: () => clearImageFile(),
+    }),
+    [imageFile.base64],
+  );
 
   const onUploadSuccess = useCallback(({ name, base64 }: ImageFileProps): void => {
     setImageFile((prev) => ({ ...prev, name, base64 }));
@@ -50,7 +62,7 @@ const UploadImageInput = forwardRef<Partial<HTMLInputElement>>(function UploadIm
     clearImageFile();
   }, []);
 
-  const clearImageFile = () => useCallback(() => setImageFile(INITIAL_IMAGE_STATE), []);
+  const clearImageFile = () => setImageFile(INITIAL_IMAGE_STATE);
 
   return (
     <>
@@ -113,4 +125,5 @@ const ContainerButton = styled(Button)`
   }
 `;
 
+UploadImageInput.displayName = 'UploadImageInput';
 export default UploadImageInput;
