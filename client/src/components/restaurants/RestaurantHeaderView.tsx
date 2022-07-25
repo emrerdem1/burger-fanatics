@@ -9,6 +9,7 @@ interface IRestaurantHeaderViewProps {
   name: IRestaurantInfo['name'];
   children: React.ReactNode;
 }
+
 const RestaurantHeaderView: React.FC<IRestaurantHeaderViewProps> = ({ icon, name, children }) => {
   return (
     <IconHeaderDiv>
@@ -34,7 +35,7 @@ const IconHeaderDiv = styled.div`
   @media (max-width: ${Breakpoints.TABLET}px) {
     flex-direction: column;
 
-    &:first-child {
+    &:first-of-type {
       margin-bottom: 20px;
     }
   }

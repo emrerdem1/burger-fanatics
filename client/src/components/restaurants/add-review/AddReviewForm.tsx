@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
 import { HeartOutlined, SmileOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message, Rate } from 'antd';
-import UploadImageInput, { IUploadResult } from './UploadImageInput';
+import UploadImageInput from './UploadImageInput';
 import { useAddNewReviewMutation } from 'redux/api/apiSlice';
 import { useAuth } from 'hooks/useAuth';
 import { FormItemNames, getRatingPayload, IFormValues } from './AddReviewForm.helper';
+import { IUploadResult } from './UploadImageInput.helper';
 
 interface IAddReviewFormProps {
   cancelModal: () => void;

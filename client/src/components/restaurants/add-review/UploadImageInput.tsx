@@ -1,47 +1,15 @@
-import React, { forwardRef, useCallback, useImperativeHandle } from 'react';
+import React, { useState, useRef, forwardRef, useCallback, useImperativeHandle } from 'react';
 import { CheckCircleTwoTone, CloseOutlined, UploadOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
 import { Button } from 'antd';
+import { getBase64, ImageFileProps, IUploadResult } from './UploadImageInput.helper';
 
-const MAX_FILE_SIZE_KB = 6144;
 const INITIAL_IMAGE_STATE: ImageFileProps = { name: '', base64: '' };
-interface ImageFileProps {
-  name: string;
-  base64: string;
-}
-type TGetBase64 = {
-  e: React.ChangeEvent<HTMLInputElement>;
-  onSuccess: ({ name, base64 }: ImageFileProps) => void;
-  onError: (errorMessage: string) => void;
-};
-
-const getBase64 = ({ e, onSuccess, onError }: TGetBase64): void => {
-  const target = e.target as HTMLInputElement;
-  if (!target.files || !target.files[0]) {
-    return onError('An error occurred, please try again');
-  }
-  const fileSizeKB = Math.round(target.files[0].size / 1024);
-  if (fileSizeKB > MAX_FILE_SIZE_KB) {
-    return onError('File size must be less than 6 MB');
-  }
-
-  const reader = new FileReader();
-  reader.readAsDataURL(target.files[0]);
-  reader.onload = () => {
-    if (typeof reader.result !== 'string') return onError('Error occurred reading file.');
-    onSuccess({ name: target.files![0].name, base64: reader.result });
-  };
-  reader.onerror = () => onError('Error occurred reading file.');
-};
-
-export interface IUploadResult {
-  image: string;
-  clearImage: () => void;
-}
 
 const UploadImageInput = forwardRef<IUploadResult>((_, ref) => {
-  const [imageFile, setImageFile] = React.useState<ImageFileProps>(INITIAL_IMAGE_STATE);
-  const [errorMessage, setErrorMessage] = React.useState<string>('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [imageFile, setImageFile] = useState<ImageFileProps>(INITIAL_IMAGE_STATE);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   useImperativeHandle(
     ref,
@@ -62,7 +30,11 @@ const UploadImageInput = forwardRef<IUploadResult>((_, ref) => {
     clearImageFile();
   }, []);
 
-  const clearImageFile = () => setImageFile(INITIAL_IMAGE_STATE);
+  const clearImageFile = () => {
+    setImageFile(INITIAL_IMAGE_STATE);
+    // Reset the value in case selecting the same file afterwards.
+    if (inputRef.current) inputRef.current.value = '';
+  };
 
   return (
     <>
@@ -74,6 +46,7 @@ const UploadImageInput = forwardRef<IUploadResult>((_, ref) => {
             id='upload-photo'
             type='file'
             accept='image/png, image/jpg, image/jpeg'
+            ref={inputRef}
             onChange={(e) =>
               getBase64({
                 e,
