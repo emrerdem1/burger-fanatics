@@ -7,12 +7,17 @@ const useToggle = () => {
     setIsShown((prev) => !prev);
   }, []);
 
+  const changeVisibility = useCallback((shouldShow: boolean) => {
+    setIsShown(shouldShow);
+  }, []);
+
   return useMemo(
     () => ({
       isShown,
       toggleVisibility,
+      changeVisibility,
     }),
-    [isShown, toggleVisibility],
+    [isShown, toggleVisibility, changeVisibility],
   );
 };
 

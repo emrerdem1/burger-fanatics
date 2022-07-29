@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react';
-import { Button, Tooltip } from 'antd';
-import AddReviewModalView from './AddReviewModalView';
+import React from 'react';
+import { Button, Modal, Tooltip } from 'antd';
 import { useAuth } from 'hooks/useAuth';
+import AddReviewForm from './AddReviewForm';
+import useToggle from 'hooks/useToggle';
 
 interface IAddReviewViewProps {
   selectedRestaurantId: string;
@@ -9,24 +10,31 @@ interface IAddReviewViewProps {
 
 const AddReviewView: React.FC<IAddReviewViewProps> = ({ selectedRestaurantId }) => {
   const { user } = useAuth();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const openModal = useCallback(() => {
-    setIsModalVisible(true);
-  }, []);
+  const { isShown, toggleVisibility, changeVisibility } = useToggle();
 
   return (
     <>
       <Tooltip title={!user ? 'You need to login first.' : null} placement='right'>
-        <Button type='text' disabled={!user} onClick={openModal} style={{ marginBottom: 10 }}>
+        <Button
+          type='text'
+          disabled={!user}
+          onClick={toggleVisibility}
+          style={{ marginBottom: 10 }}
+        >
           Add your own review
         </Button>
       </Tooltip>
-      <AddReviewModalView
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-        selectedRestaurantId={selectedRestaurantId}
-      />
+      <Modal
+        title='Share your own experience!'
+        visible={isShown}
+        onCancel={() => changeVisibility(false)}
+        footer={null}
+      >
+        <AddReviewForm
+          cancelModal={() => changeVisibility(false)}
+          selectedRestaurantId={selectedRestaurantId}
+        />
+      </Modal>
     </>
   );
 };

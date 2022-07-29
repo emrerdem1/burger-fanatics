@@ -26,7 +26,6 @@ export const getBase64 = ({ e: { target }, onSuccess, onError }: TGetBase64): vo
   }
 
   const reader = new FileReader();
-  reader.readAsDataURL(target.files[0]);
   reader.onerror = () => onError('Error occurred reading file.');
   reader.onload = () => {
     if (typeof reader.result !== 'string') return onError('Error occurred reading file.');
@@ -36,4 +35,5 @@ export const getBase64 = ({ e: { target }, onSuccess, onError }: TGetBase64): vo
       );
     onSuccess({ name: target.files[0].name, base64: reader.result });
   };
+  reader.readAsDataURL(target.files[0]);
 };

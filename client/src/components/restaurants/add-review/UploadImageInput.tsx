@@ -17,7 +17,7 @@ const UploadImageInput = forwardRef<IUploadResult>((_, ref) => {
       image: imageFile.base64,
       clearImage: () => clearImageFile(),
     }),
-    [imageFile.base64],
+    [imageFile],
   );
 
   const onUploadSuccess = useCallback(({ name, base64 }: ImageFileProps): void => {
@@ -39,11 +39,11 @@ const UploadImageInput = forwardRef<IUploadResult>((_, ref) => {
   return (
     <>
       <ContainerButton>
-        <label htmlFor='upload-photo'>
+        <label className='upload-label'>
           <UploadOutlined />
           <span className='upload-text'>Upload image</span>
           <input
-            id='upload-photo'
+            className='upload-photo'
             type='file'
             accept='image/png, image/jpg, image/jpeg'
             ref={inputRef}
@@ -58,14 +58,16 @@ const UploadImageInput = forwardRef<IUploadResult>((_, ref) => {
         </label>
       </ContainerButton>
       <OutputDiv>
-        {errorMessage && <span className='error-text'>{errorMessage}</span>}
-        {imageFile.name && (
-          <>
-            <CheckCircleTwoTone />
-            <span className='success-text'>{imageFile.name}</span>
-            <CloseOutlined onClick={clearImageFile} />
-          </>
-        )}
+        <>
+          {errorMessage && <span className='error-text'>{errorMessage}</span>}
+          {!!imageFile.name && (
+            <>
+              <CheckCircleTwoTone />
+              <span className='success-text'>{imageFile.name}</span>
+              <CloseOutlined onClick={clearImageFile} />
+            </>
+          )}
+        </>
       </OutputDiv>
     </>
   );
@@ -77,6 +79,7 @@ const OutputDiv = styled.div`
   .error-text {
     color: red;
   }
+
   .success-text {
     padding-left: 4px;
     padding-right: 8px;
@@ -93,7 +96,7 @@ const ContainerButton = styled(Button)`
     padding-left: 6px;
   }
 
-  #upload-photo {
+  .upload-label .upload-photo {
     display: none;
   }
 `;
