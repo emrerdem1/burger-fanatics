@@ -8,11 +8,11 @@ import { FormItemNames, getRatingPayload, IFormValues } from './AddReviewForm.he
 import { IUploadResult } from './UploadImageInput.helper';
 
 interface IAddReviewFormProps {
-  cancelModal: () => void;
+  closeModal: () => void;
   selectedRestaurantId: string;
 }
 
-const AddReviewForm: React.FC<IAddReviewFormProps> = ({ cancelModal, selectedRestaurantId }) => {
+const AddReviewForm: React.FC<IAddReviewFormProps> = ({ closeModal, selectedRestaurantId }) => {
   const imageRef = useRef<IUploadResult>(null);
   const [form] = Form.useForm();
   const { user } = useAuth();
@@ -30,7 +30,7 @@ const AddReviewForm: React.FC<IAddReviewFormProps> = ({ cancelModal, selectedRes
         reviewed_by: Number(user.id),
         restaurant: Number(selectedRestaurantId),
       }).unwrap();
-      cancelModal();
+      closeModal();
       form.resetFields();
       imageRef.current?.clearImage();
     } catch (e) {

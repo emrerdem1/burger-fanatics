@@ -3,21 +3,26 @@ import { useState, useCallback, useMemo } from 'react';
 const useToggle = () => {
   const [isShown, setIsShown] = useState<boolean>(false);
 
-  const toggleVisibility = useCallback(() => {
-    setIsShown((prev) => !prev);
+  const show = useCallback(() => {
+    setIsShown(true);
   }, []);
 
-  const changeVisibility = useCallback((shouldShow: boolean) => {
-    setIsShown(shouldShow);
+  const hide = useCallback(() => {
+    setIsShown(false);
+  }, []);
+
+  const toggleVisibility = useCallback(() => {
+    setIsShown((prev) => !prev);
   }, []);
 
   return useMemo(
     () => ({
       isShown,
+      show,
+      hide,
       toggleVisibility,
-      changeVisibility,
     }),
-    [isShown, toggleVisibility, changeVisibility],
+    [isShown, show, hide, toggleVisibility],
   );
 };
 

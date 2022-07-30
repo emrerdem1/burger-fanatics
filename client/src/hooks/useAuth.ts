@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRefreshToken, persistLogin, selectCurrentUser } from 'redux/auth/authSlice';
+import { getRefreshToken, persistLogin, userSelector } from 'redux/auth/authSlice';
 
 export const useAuth = () => {
   const dispatch = useDispatch();
-  const user = useSelector(selectCurrentUser);
+  const user = useSelector(userSelector);
 
   useEffect(() => {
     if (user) return;

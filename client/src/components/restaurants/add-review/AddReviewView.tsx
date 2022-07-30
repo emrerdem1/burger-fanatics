@@ -1,8 +1,8 @@
-import React from 'react';
-import { Button, Modal, Tooltip } from 'antd';
+import React, { useCallback, useRef } from 'react';
+import { Button, Tooltip } from 'antd';
 import { useAuth } from 'hooks/useAuth';
 import AddReviewForm from './AddReviewForm';
-import useToggle from 'hooks/useToggle';
+import ModalWithoutFooter, { IManuelCancelCallback } from 'features/ModalWithoutFooter';
 
 interface IAddReviewViewProps {
   selectedRestaurantId: string;
@@ -10,31 +10,30 @@ interface IAddReviewViewProps {
 
 const AddReviewView: React.FC<IAddReviewViewProps> = ({ selectedRestaurantId }) => {
   const { user } = useAuth();
-  const { isShown, toggleVisibility, changeVisibility } = useToggle();
+  const modalRef = useRef<IManuelCancelCallback>(null);
+
+  const manualModalCanceller = useCallback(() => {
+    modalRef.current?.closeModal();
+  }, []);
 
   return (
     <>
-      <Tooltip title={!user ? 'You need to login first.' : null} placement='right'>
-        <Button
-          type='text'
-          disabled={!user}
-          onClick={toggleVisibility}
-          style={{ marginBottom: 10 }}
-        >
-          Add your own review
-        </Button>
-      </Tooltip>
-      <Modal
+      <ModalWithoutFooter
+        ref={modalRef}
         title='Share your own experience!'
-        visible={isShown}
-        onCancel={() => changeVisibility(false)}
-        footer={null}
+        button={
+          <Tooltip title={!user ? 'You need to login first.' : null} placement='right'>
+            <Button type='text' disabled={!user} style={{ marginBottom: 10 }}>
+              Add your own review
+            </Button>
+          </Tooltip>
+        }
       >
         <AddReviewForm
-          cancelModal={() => changeVisibility(false)}
+          closeModal={manualModalCanceller}
           selectedRestaurantId={selectedRestaurantId}
         />
-      </Modal>
+      </ModalWithoutFooter>
     </>
   );
 };

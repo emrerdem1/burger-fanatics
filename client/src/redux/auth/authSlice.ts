@@ -34,9 +34,8 @@ const authSlice = createSlice({
   },
 });
 
-export const selectCurrentUser = (state: RootState) => {
-  return state.auth.user;
-};
+export const userSelector = (state: RootState) => state.auth.user;
+
 export const { actions, reducer } = authSlice;
 export const { logout: logoutUser, persistLogin } = actions;
 const setRefreshToken = ({ user, jwt }: UserResponse) =>
