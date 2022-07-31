@@ -9,10 +9,10 @@ import { IUploadResult } from './UploadImageInput.helper';
 
 interface IAddReviewFormProps {
   closeModal: () => void;
-  selectedRestaurantId: string;
+  restaurantId: string;
 }
 
-const AddReviewForm: React.FC<IAddReviewFormProps> = ({ closeModal, selectedRestaurantId }) => {
+const AddReviewForm: React.FC<IAddReviewFormProps> = ({ closeModal, restaurantId }) => {
   const imageRef = useRef<IUploadResult>(null);
   const [form] = Form.useForm();
   const { user } = useAuth();
@@ -28,7 +28,7 @@ const AddReviewForm: React.FC<IAddReviewFormProps> = ({ closeModal, selectedRest
         image: imageRef.current?.image || '',
         rating: getRatingPayload({ rating_taste, rating_visual, rating_texture }),
         reviewed_by: Number(user.id),
-        restaurant: Number(selectedRestaurantId),
+        restaurant: Number(restaurantId),
       }).unwrap();
       closeModal();
       form.resetFields();
@@ -45,42 +45,36 @@ const AddReviewForm: React.FC<IAddReviewFormProps> = ({ closeModal, selectedRest
       onFinish={saveReview}
       name='add-review-form'
       autoComplete='off'
-      requiredMark={false}
-    >
+      requiredMark={false}>
       <Form.Item
         name={FormItemNames.COMMENT}
-        rules={[{ required: true, message: 'Please write your review here.' }]}
-      >
+        rules={[{ required: true, message: 'Please write your review here.' }]}>
         <Input.TextArea
           showCount
           rows={6}
           maxLength={500}
           style={{ maxHeight: 200 }}
-          placeholder='Write your opinions here...'
-        ></Input.TextArea>
+          placeholder='Write your opinions here...'></Input.TextArea>
       </Form.Item>
       <Form.Item
         name={FormItemNames.RATING_TASTE}
         label='Taste'
         style={{ margin: 0 }}
-        rules={[{ required: true, message: 'Please rate the taste.' }]}
-      >
+        rules={[{ required: true, message: 'Please rate the taste.' }]}>
         <Rate allowClear={false} />
       </Form.Item>
       <Form.Item
         name={FormItemNames.RATING_VISUAL}
         label='Visual'
         style={{ margin: 0 }}
-        rules={[{ required: true, message: 'Please rate the visual.' }]}
-      >
+        rules={[{ required: true, message: 'Please rate the visual.' }]}>
         <Rate character={<SmileOutlined />} allowClear={false} />
       </Form.Item>
       <Form.Item
         name={FormItemNames.RATING_TEXTURE}
         label='Texture'
         style={{ marginTop: 0 }}
-        rules={[{ required: true, message: 'Please rate the texture.' }]}
-      >
+        rules={[{ required: true, message: 'Please rate the texture.' }]}>
         <Rate character={<HeartOutlined />} allowClear={false} />
       </Form.Item>
       <UploadImageInput ref={imageRef} />

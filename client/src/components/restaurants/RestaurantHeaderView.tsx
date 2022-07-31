@@ -4,18 +4,21 @@ import { Typography } from 'antd';
 import { IRestaurantInfo } from 'helpers/general/types';
 import { Breakpoints } from 'helpers/general/constants';
 
-interface IRestaurantHeaderViewProps {
+export interface IRestaurantHeaderInfo {
   icon: IRestaurantInfo['icon'];
   name: IRestaurantInfo['name'];
-  children: React.ReactNode;
 }
 
-const RestaurantHeaderView: React.FC<IRestaurantHeaderViewProps> = ({ icon, name, children }) => {
+export type TRestaurantHeaderViewProps = IRestaurantHeaderInfo & {
+  children?: React.ReactNode;
+};
+
+const RestaurantHeaderView: React.FC<TRestaurantHeaderViewProps> = ({ icon, name, children }) => {
   return (
     <IconHeaderDiv>
       <LeftSideDiv>
         <div className='image-container'>
-          <img src={icon} />
+          <img src={icon} alt='restaurant icon' />
         </div>
         <Typography.Title className='title' ellipsis level={3}>
           {name}

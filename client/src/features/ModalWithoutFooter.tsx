@@ -1,11 +1,13 @@
-import React, { forwardRef, useImperativeHandle, useMemo } from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { Modal } from 'antd';
 import { ButtonProps } from 'antd/lib/button';
 import useToggle from 'hooks/useToggle';
+import ModalTriggerButton from './ModalTriggerButton';
 
-interface IModalDialogProps extends React.HTMLProps<HTMLDivElement> {
+export interface IModalDialogProps extends React.HTMLProps<HTMLDivElement> {
   title?: string;
   button?: React.ReactElement<ButtonProps>;
+  buttonWrapper?: React.ReactElement;
   children: React.ReactNode;
 }
 
@@ -14,7 +16,7 @@ export interface IManuelCancelCallback {
 }
 
 const ModalWithoutFooter = forwardRef<IManuelCancelCallback, IModalDialogProps>(
-  ({ title, button, children, ...props }, ref) => {
+  ({ title, button, buttonWrapper, children, ...props }, ref) => {
     const { isShown, show, hide } = useToggle();
 
     useImperativeHandle(
@@ -25,18 +27,9 @@ const ModalWithoutFooter = forwardRef<IManuelCancelCallback, IModalDialogProps>(
       [hide],
     );
 
-    const Button = useMemo(
-      () =>
-        button &&
-        React.cloneElement(button, {
-          onClick: show,
-        }),
-      [button],
-    );
-
     return (
       <>
-        {Button}
+        <ModalTriggerButton button={button} buttonWrapper={buttonWrapper} callback={show} />
         <Modal title={title} visible={isShown} onCancel={hide} footer={null} {...props}>
           {children}
         </Modal>

@@ -1,28 +1,38 @@
-import React, { useMemo } from 'react';
-import RestaurantView from '../../components/restaurants/RestaurantView';
-import { useGetRestaurantsQuery } from 'redux/api/apiSlice';
-import LoaderView from 'components/common/LoaderView';
-import ErrorView from 'components/common/ErrorView';
+import React from 'react';
+import AddReviewView from 'components/restaurants/add-review/AddReviewView';
+import RestaurantHeaderView from 'components/restaurants/RestaurantHeaderView';
+import RestaurantOverview from 'components/restaurants/RestaurantOverview';
+import RestaurantReviewBody from 'components/restaurants/RestaurantReviewBody';
+import RestaurantStatisticsView from 'components/restaurants/RestaurantStatisticsView';
+import RestaurantView from 'components/restaurants/RestaurantView';
+import { IBaseApiData, IRestaurantInfo } from 'helpers/general/types';
 
-const RestaurantsListView = () => {
-  const { data, isLoading, isError } = useGetRestaurantsQuery();
+interface IRestaurantsListProps {
+  data: IBaseApiData<IRestaurantInfo>[];
+}
 
-  const restaurantList = useMemo(
-    () =>
-      data?.data.map((restaurant) => (
+const RestaurantsListView: React.FC<IRestaurantsListProps> = ({ data }) => (
+  <div>
+    {data.map(({ id, attributes }) => {
+      return (
         <RestaurantView
-          key={restaurant.id}
-          restaurant={restaurant.attributes}
-          restaurantId={restaurant.id}
-        />
-      )),
-    [data?.data],
-  );
-
-  if (isError) return <ErrorView hasHomeNavigation />;
-  if (isLoading || !data) return <LoaderView />;
-
-  return <div>{restaurantList}</div>;
-};
+          key={id}
+          reviewHeader={<RestaurantHeaderView icon={attributes.icon} name={attributes.name} />}
+          reviewBody={
+            <RestaurantReviewBody info={attributes}>
+              <AddReviewView restaurantId={id} />
+            </RestaurantReviewBody>
+          }>
+          <RestaurantOverview address={attributes.address} description={attributes.description}>
+            <RestaurantStatisticsView
+              reviews={attributes.reviews.data}
+              opening_hours={attributes.opening_hours}
+            />
+          </RestaurantOverview>
+        </RestaurantView>
+      );
+    })}
+  </div>
+);
 
 export default RestaurantsListView;

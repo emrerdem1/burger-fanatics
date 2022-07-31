@@ -1,56 +1,43 @@
-import React, { useMemo } from 'react';
-import { IRestaurantInfo } from 'helpers/general/types';
+import React, { cloneElement, useMemo } from 'react';
 import { CustomCard } from 'components/common/styled/Card.styled';
-import RestaurantReviewBody from './RestaurantReviewBody';
-import RestaurantHeaderView from './RestaurantHeaderView';
 import styled from '@emotion/styled';
 import { Button } from 'antd';
 import { Breakpoints, ColorPalette } from 'helpers/general/constants';
-import RestaurantInfoBody from './RestaurantInfoBody';
 import { DownOutlined, RightOutlined } from '@ant-design/icons';
 import useToggle from 'hooks/useToggle';
-import AddReviewView from './add-review/AddReviewView';
-import RestaurantStatisticsView from './RestaurantStatisticsView';
 
 interface IRestaurantViewProps {
-  restaurantId: string;
-  restaurant: IRestaurantInfo;
+  reviewHeader: React.ReactElement;
+  reviewBody: React.ReactNode;
+  children: React.ReactNode;
 }
 
-const RestaurantView: React.FC<IRestaurantViewProps> = ({ restaurant, restaurantId }) => {
+const RestaurantView: React.FC<IRestaurantViewProps> = ({
+  reviewHeader,
+  reviewBody,
+  children: reviewOverview,
+}) => {
   const { isShown, toggleVisibility } = useToggle();
 
-  const { restaurantDetails, restaurantReviews } = useMemo(
-    () => ({
-      restaurantDetails: (
-        <RestaurantInfoBody address={restaurant.address} description={restaurant.description}>
-          <RestaurantStatisticsView
-            reviews={restaurant.reviews.data}
-            opening_hours={restaurant.opening_hours}
-          />
-        </RestaurantInfoBody>
-      ),
-      restaurantReviews: (
-        <RestaurantReviewBody info={restaurant}>
-          <AddReviewView selectedRestaurantId={restaurantId} />
-        </RestaurantReviewBody>
-      ),
-    }),
-    [restaurant, restaurantId],
+  const reviewHeaderWithToggle = useMemo(
+    () =>
+      cloneElement(reviewHeader, {
+        children: (
+          <ToggleReviewsButton
+            onClick={toggleVisibility}
+            icon={isShown ? <DownOutlined /> : <RightOutlined />}>
+            {isShown ? 'Back to the Info' : 'See Reviews'}
+          </ToggleReviewsButton>
+        ),
+      }),
+    [isShown, toggleVisibility, reviewHeader],
   );
 
   return (
     <CustomCard padding='16px 26px' padding_sm='16px 16px' margin='12px 0'>
-      <RestaurantHeaderView icon={restaurant.icon} name={restaurant.name}>
-        <ToggleReviewsButton
-          onClick={toggleVisibility}
-          icon={isShown ? <DownOutlined /> : <RightOutlined />}
-        >
-          {isShown ? 'Back to the Info' : 'See Reviews'}
-        </ToggleReviewsButton>
-      </RestaurantHeaderView>
-      <VisibilityTogglerDiv shouldShow={!isShown}>{restaurantDetails}</VisibilityTogglerDiv>
-      <VisibilityTogglerDiv shouldShow={isShown}>{restaurantReviews}</VisibilityTogglerDiv>
+      {reviewHeaderWithToggle}
+      <VisibilityTogglerDiv shouldShow={!isShown}>{reviewOverview}</VisibilityTogglerDiv>
+      <VisibilityTogglerDiv shouldShow={isShown}>{reviewBody}</VisibilityTogglerDiv>
     </CustomCard>
   );
 };

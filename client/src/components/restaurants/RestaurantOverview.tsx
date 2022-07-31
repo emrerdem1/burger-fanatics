@@ -4,13 +4,13 @@ import { IRestaurantInfo } from 'helpers/general/types';
 import styled from '@emotion/styled';
 import { ColorPalette } from 'helpers/general/constants';
 
-interface IRestaurantInfoBodyProps {
+interface IRestaurantOverviewProps {
   address: IRestaurantInfo['address'];
   description: IRestaurantInfo['description'];
   children: React.ReactNode;
 }
 
-const RestaurantInfoBody: React.FC<IRestaurantInfoBodyProps> = ({
+const RestaurantOverview: React.FC<IRestaurantOverviewProps> = ({
   address,
   description,
   children,
@@ -33,4 +33,4 @@ const InfoDetailDiv = styled.div`
   color: ${ColorPalette.black.secondary};
 `;
 
-export default RestaurantInfoBody;
+export default RestaurantOverview;
