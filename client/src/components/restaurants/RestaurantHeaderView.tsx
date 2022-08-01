@@ -65,6 +65,10 @@ const LeftSideDiv = styled.div`
       object-fit: cover;
     }
   }
+
+  @media (max-width: ${Breakpoints.TABLET}px) {
+    max-width: unset;
+  }
 `;
 
 export default RestaurantHeaderView;

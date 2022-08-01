@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
-import { ColorPalette } from 'helpers/general/constants';
+import { Breakpoints, ColorPalette } from 'helpers/general/constants';
 import { IBaseApiData, IRestaurantInfo, IReviews } from 'helpers/general/types';
 import { BarChartOutlined, FieldTimeOutlined, RadarChartOutlined } from '@ant-design/icons';
 import { getDecimalValue } from 'helpers/general/utils';
@@ -24,21 +24,21 @@ const RestaurantStatisticsView: React.FC<IRestaurantStatisticsViewProps> = ({
   return (
     <CardFooterDiv>
       <BoxDiv>
-        <div>
+        <InfoTitleDiv>
           <RadarChartOutlined /> <strong>Rating: </strong>
-        </div>
+        </InfoTitleDiv>
         <span className='detail-data'>{ratingAverage}</span>
       </BoxDiv>
       <BoxDiv>
-        <div>
+        <InfoTitleDiv>
           <BarChartOutlined /> <strong>Reviews: </strong>
-        </div>
+        </InfoTitleDiv>
         <span className='detail-data'>{reviews.length} people</span>
       </BoxDiv>
       <BoxDiv>
-        <div>
+        <InfoTitleDiv>
           <FieldTimeOutlined /> <strong>Hours of operation: </strong>
-        </div>
+        </InfoTitleDiv>
         <span className='detail-data'>{opening_hours}</span>
       </BoxDiv>
     </CardFooterDiv>
@@ -47,8 +47,12 @@ const RestaurantStatisticsView: React.FC<IRestaurantStatisticsViewProps> = ({
 
 const CardFooterDiv = styled.div`
   display: flex;
-  column-gap: 32px;
+  column-gap: 2rem;
   color: ${ColorPalette.black.secondary};
+
+  @media (max-width: ${Breakpoints.MOBILE}px) {
+    column-gap: 1.2rem;
+  }
 `;
 
 const BoxDiv = styled.div`
@@ -62,6 +66,17 @@ const BoxDiv = styled.div`
   .detail-data {
     margin-left: 4px;
   }
+
+  @media (max-width: ${Breakpoints.MOBILE}px) {
+    overflow: hidden;
+    justify-content: center;
+  }
+`;
+
+const InfoTitleDiv = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;,
 `;
 
 export default RestaurantStatisticsView;
